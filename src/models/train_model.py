@@ -338,8 +338,9 @@ def main():
 
     args = get_args()
     logging.set_verbosity(args.verbosity)
-    feature_engineer = FeatureEngineer("long_live")
-    model_trainer = ModelTrainer(feature_engineer, args)
+    #feature_engineer = FeatureEngineer("long_live")            #Don't need this, data read from file
+    #model_trainer = ModelTrainer(feature_engineer, args)       #Don't need this, data read from file
+    model_trainer = ModelTrainer(None, args)
     model_trainer.train_and_evaluate()
 
 

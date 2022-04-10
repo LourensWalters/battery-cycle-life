@@ -127,91 +127,6 @@ I did install CUDA on my system, and do have an NVIDIA card. You can run the cod
 adapt it to run on GoogleCloud API, but I have not done so yet. Feel free to implement this though! Let me know if 
 you need help on this. 
 
-## Background
-
-The objective of this project is however to consider the best data architecture, for a more generic problem i.e. how 
-to deploy such a system in a hypothetical environment, with features similar to those described in the Nature 
-article - but which are entirely fictional and only used for the purpose of studying Systems Architecture.
-
-## The Problem
-
-As Data Scientists, we are stranded on the island of scientific inquiry. 
-
-![](.README_images/3d796707.png)
-(Kleppmann, 2017)
-
-We need to make our way to the Kingdom of Analytics, without getting lost in the Mountains of Column Storage, 
-drowning in the Ocean of Distributed Data or being lured astray by the Star Schema Monument. 
-
-We need to come up with a strategy to ensure the Islands of Scientific Inquiry are firmly connected to the Kingdom 
-of Analytics. 
-
-## Our Fictional Organisation
-
-We are a new team of Data Scientists working for a large multi-national car company with a strategy to make the best 
-electric vehicles. The company has many research laboratories doing research on battery technologies to invent the 
-best battery that would optimise their business returns. They have the best scientists performing many tests on 
-complex laboratory systems that measure many different aspects of battery performance. The equipment output files in 
-CSV format, and the scientists only know how to use Excel. They perform incredibly complex calculations in Excel 
-spreadsheets of Gigabytes in size. The spreadsheets are stored on local lab machines. Until now these highly qualified 
-scientists have lived a happy live knowing not many can understand their work and no-one will probably ever decipher their
-convoluted Excel spreadsheets. They had perfect job security and career fullfilment!
-
-Recently a team from Stanford published a paper on predictive models that can predict the lifetime of a battery by 
-only testing the first 50 discharge cycles. Usually all batteries have to be tested for 1500 cycles, this is truly 
-a revolutionary improvement and management want to start implementing this on the company's data. They also don't 
-want to invest in a system do aggregate data for single purpose, so want the proposed system to also replicate all 
-the logic in the scientist's Excel spreadsheets! The scientists are obviously not very pleased, they like Excel!
-
-As the new data science team, you are tasked with coming up with a data management architecture to accomplish this goal!
-
-How exciting!
-
-## The Challenge
-
-What would the best architecture be for such a system? Some of the things you should consider are: 
-
-* The data value funnel and which tools our battery scientists should use to extract value in this new world we will be 
-  introducing them to? 
-
-![](.README_images/5d50c2da.png)
-(Rattenbury et al., 2017)
-*  How would a data workflow fit into this new archicture? Who will do what in this workflow?
-
-![](.README_images/43451118.png)
-(Rattenbury et al., 2017)
-* Should we treat raw data differently to derived data? If so, how?
-
-![](.README_images/b1b48bc5.png)
-(Rattenbury et al., 2017)
-* Do we need a data lake?
-* Do we need a data warehouse?
-* Should we go with cloud or on-premise?
-* What tools should we use for each part of the architecture. 
-
-## The Assignment
-
-We should go forth and design a tangible system that ingests the battery data from various laboratories in different 
-countries. The data are source files in CSV as well as Excel Spreadsheets. Some of the battery testing equipment also 
-has SQL databases attached that store data regarding tests - this is however not the norm. 
-
-The data need to be accurately curated. The system needs to be able to do laboratory reporting. The system must 
-enable us to use the data in new ways previously not possible. The system must be flexible enough to adapt to new 
-data formats for future growth of the company. The company is thinking of expanding into Wind Energy and might need 
-to introduce data from these sources at some future points. The system can also not be expensive, the company is 
-going through a downturn and need to cut costs. The system will need to be built using the cheapest components 
-possible. Most importantly, the system must put a smile on the scientists faces and give them a new reason for 
-finding fulfillment in their jobs!
-
-There is no right and wrong, be as creative as you can! The main thing is to back up your answers with 
-justifications as best you can. 
-
-Let us try to have a lively debate around this. We can schedule a call if you think this is an interesting problem. 
-
-If not, compile the code and play with the Tensorflow models!
-
-Above all else, have fun!
-
 ## References
 
 * Attia, P. M., Grover, A., Jin, N., Severson, K. A., Markov, T. M., Liao, Y. H., Chen, M. H., Cheong, B., Perkins, N.
@@ -221,7 +136,6 @@ Above all else, have fun!
 * Rattenbury, T., Hellerstein, J. M., Heer, J., Kandel, S., & Carreras, C. (2017). Principles of Data Wrangling.
 * Severson, K. A., Attia, P. M., Jin, N., Perkins, N., Jiang, B., Yang, Z., Chen, M. H., Aykol, M., Herring, P. K., 
   Fraggedakis, D., Bazant, M. Z., Harris, S. J., Chueh, W. C., & Braatz, R. D. (2019). Data-driven prediction of battery cycle life before capacity degradation. Nature Energy, 4(5), 383–391. https://doi.org/10.1038/s41560-019-0356-8
-
 
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
