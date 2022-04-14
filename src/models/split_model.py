@@ -1,5 +1,5 @@
 import src.constants as cst
-from tensorflow.keras.layers import concatenate, LSTM, Conv1D, Flatten, TimeDistributed, Input, Dense, MaxPooling1D, Dropout, Activation
+from tensorflow.keras.layers import concatenate, LSTM, Conv1D, Flatten, Input, Dense, MaxPooling1D, Dropout, Activation, TimeDistributed
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from src.models.custom_metrics_losses import mae_current_cycle, mae_remaining_cycles

@@ -1,7 +1,8 @@
 import src.constants as cst
 from src.models.custom_metrics_losses import mae_current_cycle, mae_remaining_cycles
 
-from tensorflow.keras.layers import concatenate, Conv1D, Conv2D, Flatten, Input, Dense, MaxPool1D, MaxPool2D, Dropout
+from tensorflow.keras.layers import concatenate, Conv1D, Conv2D, Flatten, Input, Dense, MaxPool1D, MaxPool2D, \
+    Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from src.models.split_model import Clippy, clipped_relu
