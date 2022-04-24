@@ -66,7 +66,7 @@ venv39
 *.db
 *.rdb
 data.zip
-data
+
 
 # Pycharm
 .idea
@@ -81,6 +81,7 @@ data
 .ipynb_checkpoints/
 
 # exclude data from source control by default
+#/data/
 /data/
 Graph
 
