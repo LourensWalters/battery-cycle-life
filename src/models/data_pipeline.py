@@ -7,6 +7,24 @@ import tensorflow as tf
 import src.constants as cst
 
 
+def print_dict_keys(print_dict, a=0, ident=2, max_depth=100):
+    """Prints all keys of a dictionary recursively up until the maximum depth.
+
+    Arguments:
+        print_dict {dict} -- The python dictionary to print.
+
+    Keyword Arguments:
+        a {int} -- Counter for the recursive calling of the print function. (default: {0})
+        ident {int} -- The number of spaces to use to ident the different key levels. (default: {2})
+        max_depth {int} -- The maximum depth in the print_dict to print the keys. (default: {100})
+    """
+    for key, value in print_dict.items():
+        print(" " * a + f"[{key}]")
+
+        if isinstance(value, dict) and max_depth > a / ident:
+            print_dict_keys(value, a + ident, max_depth=max_depth)
+
+
 def get_cycle_example(cell_value, summary_idx, cycle_idx, scaling_factors):
     """
     Define the columns that should be written to tfrecords and converts the raw data
@@ -24,11 +42,11 @@ def get_cycle_example(cell_value, summary_idx, cycle_idx, scaling_factors):
                 / scaling_factors[cst.DISCHARGE_TIME_NAME]]
     cc_value = [float(cycle_idx)
                 / scaling_factors[cst.REMAINING_CYCLES_NAME]]  # Same scale --> same scaling factor
-    
+
     # Detail feature values (arrays)
     qdlin_value = cell_value["cycles"][cycle_idx][cst.QDLIN_NAME] / scaling_factors[cst.QDLIN_NAME]
     tdlin_value = cell_value["cycles"][cycle_idx][cst.TDLIN_NAME] / scaling_factors[cst.TDLIN_NAME]
-    
+
     # Wrapping as example
     cycle_example = tf.train.Example(
         features=tf.train.Features(
@@ -71,9 +89,9 @@ def write_to_tfrecords(batteries, data_dir, train_test_split=None):
     # Create base directory for tfrecords
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
-    
+
     scaling_factors = calculate_and_save_scaling_factors(batteries, train_test_split, cst.SCALING_FACTORS_DIR)
-    
+
     if train_test_split is None:
         # Write all cells into one directory
         for cell_name, cell_data in batteries.items():
@@ -125,11 +143,11 @@ def parse_features(example_proto):
         cst.QDLIN_NAME: tf.io.FixedLenFeature([cst.STEPS, cst.INPUT_DIM], tf.float32)
     }
     examples = tf.io.parse_single_example(example_proto, feature_description)
-    
+
     target_remaining = examples.pop(cst.REMAINING_CYCLES_NAME)
     target_current = examples.pop(cst.CURRENT_CYCLE_NAME)
     targets = tf.stack([target_current, target_remaining], 0)
-    
+
     return examples, targets
 
 
@@ -161,6 +179,7 @@ def get_flatten_windows(window_size):
         # so we only get the last row by skipping all but one row
         target_flat = target.skip(window_size - 1)
         return tf.data.Dataset.zip((features_flat, target_flat))
+
     return flatten_windows
 
 
@@ -178,10 +197,11 @@ def get_create_cell_dataset_from_tfrecords(window_size, shift, stride, drop_rema
         dataset = dataset.window(size=window_size, shift=shift, stride=stride, drop_remainder=drop_remainder)
         dataset = dataset.flat_map(get_flatten_windows(window_size))
         return dataset
+
     return create_cell_dataset_from_tfrecords
 
 
-def create_dataset(data_dir, window_size, shift, stride, batch_size, 
+def create_dataset(data_dir, window_size, shift, stride, batch_size,
                    cycle_length=4, num_parallel_calls=4,
                    drop_remainder=True, shuffle=True,
                    shuffle_buffer=500, repeat=True):
@@ -207,10 +227,10 @@ def create_dataset(data_dir, window_size, shift, stride, batch_size,
                                                     num_parallel_calls=num_parallel_calls)
     if shuffle:
         assembled_dataset = assembled_dataset.shuffle(shuffle_buffer)
-    
+
     # The batching has to happen after shuffling the windows, so one batch is not sequential
     assembled_dataset = assembled_dataset.batch(batch_size)
-    
+
     if repeat:
         assembled_dataset = assembled_dataset.repeat()
     return assembled_dataset
@@ -219,17 +239,16 @@ def create_dataset(data_dir, window_size, shift, stride, batch_size,
 def calculate_and_save_scaling_factors(data_dict, train_test_split, csv_dir):
     """Calculates the scaling factors for every feature based on the training set in train_test_split
     and saves the result in a csv file. The factors are used during writing of the tfrecords files."""
-    
+
     print("Calculate scaling factors...")
     scaling_factors = dict()
-    
+
     if train_test_split != None:
         # only take training cells
         data_dict = {k: v for k, v in data_dict.items() if k in train_test_split["train"]}
     else:
         # only take non-secondary-test cells
         data_dict = {k: v for k, v in data_dict.items() if k.startswith('b3')}
-
 
     # Calculating max values for summary features
     for k in [cst.INTERNAL_RESISTANCE_NAME,
@@ -240,7 +259,7 @@ def calculate_and_save_scaling_factors(data_dict, train_test_split, csv_dir):
         scaling_factors[k] = max([max(cell_v["summary"][k])
                                   for cell_k, cell_v in data_dict.items()
                                   for cycle_v in cell_v["cycles"].values()])
-    
+
     # Calculating max values for detail features
     for k in [cst.QDLIN_NAME,
               cst.TDLIN_NAME]:
@@ -248,7 +267,7 @@ def calculate_and_save_scaling_factors(data_dict, train_test_split, csv_dir):
         scaling_factors[k] = max([max(cycle_v[k])
                                   for cell_k, cell_v in data_dict.items()
                                   for cycle_v in cell_v["cycles"].values()])
-    
+
     with open(csv_dir, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=scaling_factors.keys())
         writer.writeheader()  # Write the field names in the first line of the csv
@@ -295,3 +314,5 @@ if __name__ == "__main__":
     print("Start writing to disk...")
     write_to_tfrecords(battery_data, cst.DATASETS_DIR, train_test_split=split)
     print("Done.")
+
+# %%
