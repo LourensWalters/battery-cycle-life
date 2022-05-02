@@ -76,7 +76,6 @@ Please feel free to check out the code, run it and improve it as you see fit.
 
 * You can download the data here: 
   [Data](https://drive.google.com/drive/folders/1JPBqZARmIS2ZnMdHuGr49qHGFN5OAAzB?usp=sharing) 
-* It might take a while as the file is 6GB in size. 
 * Unzip the data into the "data" directory above (unzipped 9GB).
 * You should now be ready to run the code. 
 
@@ -85,38 +84,6 @@ Also, you can use the _virtualenv_ in venv to run the code (it is up to date):
 _. .\venv\Scripts\activate_
 
 Else you can use the _requirements.txt_ file to set up an environment of your own. 
-
-Lastly, use the _src.data.make_data.py_ module to enable or disable GPU support for Tensorflow. The code to enable 
-or disable comes just after the module imports, it sets an environment variable to do the job - this works from
-Tensorflow 2 onwards. Not using GPU support will only affect training in this project. Data Wrangling is obviously 
-not affected, which takes up most of the time. An interesting side project would be to measure the speedup between 
-GPU and non-GPU! 
-
-The code can be run from the command line from the project root by using: 
-
-_python -m src.data.make_data <input_filepath> <output_filepath>_
-
-You can provide the code base directory as input and output paths for the moment, these variables are not currently 
-used. 
-
-This command will do the following: 
-
-* Read data from matlab files, and convert to pickled Python dictionary.
-* Wrangle data by: cleaning data, converting time-series variables to same scale, imputing missing values, dropping 
-  outliers and creating new features. 
-* Create tensorflow file format, and output file to tensorflow formatted files. 
-* Read data from tensorflow format, build CNN. 
-* Save CNN to file through callback function.
-
-This can be followed up with making predictions using the model by: 
-
-_python -m src.data.predict_model_
-
-* Reads saved tensorflow CNN from file.
-* Read prediction data from dataset. 
-* Apply model to prediction set. 
-* Calculater accuracy of result.
-* Report results. 
 
 There are various Jupyter notebooks in the notebook directory, that visualise results and can be used to run all of 
 the data transformation and model building manually. 
