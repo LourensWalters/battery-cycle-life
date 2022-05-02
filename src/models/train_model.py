@@ -68,7 +68,7 @@ class ModelTrainer:
         parser.add_argument(
             '--num-epochs',
             type=int,
-            default=3,
+            default=70,
             help='number of times to go through the data, default=3')
         parser.add_argument(
             '--batch-size',
@@ -113,7 +113,7 @@ class ModelTrainer:
         )
         parser.add_argument(
             '--save-from',
-            default=80,
+            default=70,
             type=int,
             help='epoch after which model checkpoints are saved, default=80'
         )
@@ -270,7 +270,7 @@ def get_args():
     parser.add_argument(
         '--num-epochs',
         type=int,
-        default=3,
+        default=70,
         help='number of times to go through the data, default=3')
     parser.add_argument(
         '--batch-size',
